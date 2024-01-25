@@ -1,213 +1,242 @@
-{-
-    Functional Morphology: Latin type system
-    Copyright (C) 2004  Author: Markus Forsberg
+// {-
+//     Functional Morphology: Latin type system
+//     Copyright (C) 2004  Author: Markus Forsberg
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+//     This program is free software; you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation; either version 2 of the License, or
+//     (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
--}
+//     You should have received a copy of the GNU General Public License
+//     along with this program; if not, write to the Free Software
+//     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+// -}
+use fm_core::general::Param;
 
+// module TypesLat where
 
-module TypesLat where
+// import General
+// import Invariant
 
-import General
-import Invariant
+// {- Latin noun -}
 
-{- Latin noun -}
+// {- Latin noun inflectional parameters -}
 
-{- Latin noun inflectional parameters -}
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum Case {
+    Nominative,
+    Vocative,
+    Accusative,
+    Genitive,
+    Dative,
+    Ablative,
+}
 
-data Case   = Nominative | 
-	      Vocative   |
-	      Accusative | 
-	      Genitive   |
-	      Dative     | 
-	      Ablative     
- deriving (Show,Eq,Enum,Ord,Bounded)
+impl Param for Case {} // where values = enum
 
-instance Param Case    where values = enum
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum Number {
+    Singular,
+    Plural,
+}
+//  deriving (Show,Eq,Enum,Ord,Bounded)
 
-data Number = Singular | 
-	      Plural
- deriving (Show,Eq,Enum,Ord,Bounded)
+impl Param for Number {} // where values = enum
 
-instance Param Number  where values = enum
+/// Latin noun inherent parameter
 
-{- Latin noun inherent parameter -}
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum Gender {
+    Masculine,
+    Feminine,
+    Neuter,
+}
+//  deriving (Show,Eq,Enum,Ord,Bounded)
 
-data Gender = Masculine | 
-              Feminine  | 
-	      Neuter
- deriving (Show,Eq,Enum,Ord,Bounded)
+impl Param for Gender {} // where values = enum
 
-instance Param Gender where values = enum
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub struct NounForm(Number, Case);
+// pub struct NounForm (Number,Case);
+//  deriving (Show,Eq,Ord)
 
-data NounForm = NounForm Number Case
- deriving (Show,Eq,Ord)
+impl Param for NounForm {} // where
 
-instance Param NounForm where
-    values = [NounForm n c | n <- values , c <- values]
-    prValue (NounForm n c) = unwords $ [prValue n, prValue c]
-			
-type Noun = NounForm -> Str
+//     values = [NounForm n c | n <- values , c <- values]
+//     prValue (NounForm n c) = unwords $ [prValue n, prValue c]
 
-{- Latin adjectives -}
+// type Noun = NounForm -> Str
 
-data Grade = Positive    | 
-	     Comparative | 
-	     Superlative
- deriving (Show,Eq,Enum,Ord,Bounded)
+// {- Latin adjectives -}
 
-instance Param Grade   where values = enum
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum Grade {
+    Positive,
+    Comparative,
+    Superlative,
+} //  deriving (Show,Eq,Enum,Ord,Bounded)
 
-data AdjectiveForm = AdjectiveForm Grade Gender Number Case
- deriving (Show,Eq)
+impl Param for Grade {} // where values = enum
 
-instance Param AdjectiveForm where
-    values = [AdjectiveForm gr g n c | 
-	      gr <- values, 
-	      g  <- values, 
-	      n <- values, 
-	      c <- values]
-    prValue (AdjectiveForm gr g n c) = 
-	unwords $ [prValue gr, prValue g, prValue n, prValue c]
+// pub struct AdjectiveForm Grade Gender (Number,Case);
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub struct AdjectiveForm(Grade, Gender, Number, Case);
+//  deriving (Show,Eq)
 
-type Adjective = AdjectiveForm -> Str
+impl Param for AdjectiveForm {} // where
+                                //     values = [AdjectiveForm gr g n c |
+                                // 	      gr <- values,
+                                // 	      g  <- values,
+                                // 	      n <- values,
+                                // 	      c <- values]
+                                //     prValue (AdjectiveForm gr g n c) =
+                                // 	unwords $ [prValue gr, prValue g, prValue n, prValue c]
 
-{- Adverbs -}
+// type Adjective = AdjectiveForm -> Str
 
-data AdverbForm = AdverbForm Grade
- deriving (Show,Eq)
+// {- Adverbs -}
 
-instance Param AdverbForm where
-    values  = [AdverbForm g | g <- values]
-    prValue (AdverbForm g) = prValue g
+pub struct Adverb(Form, Grade);
+//  deriving (Show,Eq)
 
-type Adverb = AdverbForm -> Str
+impl Param for AdverbForm {} // where
+                             //     values  = [AdverbForm g | g <- values]
+                             //     prValue (AdverbForm g) = prValue g
 
-{- Particles  -}
+// type Adverb = AdverbForm -> Str
 
-data ParticleForm = ParticleForm Invariant
- deriving (Show,Eq)
+// {- Particles  -}
 
-instance Param ParticleForm where
-    values     = [ParticleForm p | p <- values]
-    prValue _  = "Invariant"
+pub struct ParticleForm(Invariant);
+//  deriving (Show,Eq)
 
-type Particle    = ParticleForm  -> Str
+impl Param for ParticleForm {} // where
+                               //     values     = [ParticleForm p | p <- values]
+                               //     prValue _  = "Invariant"
 
-{- Preposition -}
+// type Particle    = ParticleForm  -> Str
 
-data PrepForm = PrepForm Invariant
- deriving (Show,Eq)
+// {- Preposition -}
 
+pub struct PrepForm(Invariant);
+//  deriving (Show,Eq)
 
-instance Param PrepForm where
-    values     = [PrepForm p | p <- values]
-    prValue _  = "Invariant"
+impl Param for PrepForm {} // where
+                           //     values     = [PrepForm p | p <- values]
+                           //     prValue _  = "Invariant"
 
-type Preposition = PrepForm -> Str
+// type Preposition = PrepForm -> Str
 
-{- Verb -}
+// {- Verb -}
 
-data Person = First  |
-	      Second |
-	      Third 
- deriving (Show,Eq,Enum,Ord,Bounded)
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum Person {
+    First,
+    Second,
+    Third,
+} //  deriving (Show,Eq,Enum,Ord,Bounded)
 
-data PersonI = SecondI |
-	       ThirdI 
- deriving (Show,Eq,Enum,Ord,Bounded)	  
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum PersonI {
+    SecondI,
+    ThirdI,
+}
+//  deriving (Show,Eq,Enum,Ord,Bounded)
 
-data Tense = Present       |
-	     Imperfect     | 
-	     Future        |
-	     Perfect       |
-	     FuturePerfect |
-	     PluPerfect
- deriving (Show,Eq,Enum,Ord,Bounded)	  
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum Tense {
+    Present,
+    Imperfect,
+    Future,
+    Perfect,
+    FuturePerfect,
+    PluPerfect,
+} //  deriving (Show,Eq,Enum,Ord,Bounded)
 
-data TenseI = PresentI |
-	      PerfectI |
-	      FutureI 
- deriving (Show,Eq,Enum,Ord,Bounded)	  
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum TenseI {
+    PresentI,
+    PerfectI,
+    FutureI,
+}
+//  deriving (Show,Eq,Enum,Ord,Bounded)
 
-data TenseS = PresentS   |
-              ImperfectS |
-	      PerfectS   |
-	      PluPerfectS
-  deriving (Show,Eq,Enum,Ord,Bounded)
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum TenseS {
+    PresentS,
+    ImperfectS,
+    PerfectS,
+    PluPerfectS,
+} //   deriving (Show,Eq,Enum,Ord,Bounded)
 
-data Voice = Active |
-	     Passive
- deriving (Show,Eq,Enum,Ord,Bounded)	  
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum Voice {
+    Active,
+    Passive,
+}
+//  deriving (Show,Eq,Enum,Ord,Bounded)
 
-data VerbForm = 
-    Indicative Person Number Tense Voice   |
-    Infinitive TenseI Voice                |
-    ParticiplesFuture  Voice               |
-    ParticiplesPresent                     |
-    ParticiplesPerfect                     |
-    Subjunctive Person Number TenseS Voice |
-    ImperativePresent Number Voice         |
-    ImperativeFutureActive  Number PersonI |
-    ImperativeFuturePassiveSing PersonI    |
-    ImperativeFuturePassivePl              |
-    GerundGenitive                         |
-    GerundDative                           |
-    GerundAcc                              |
-    GerundAbl                              |
-    SupineAcc                              |
-    SupineAblative 
- deriving (Show,Eq,Ord)	  
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub enum VerbForm {
+    Indicative(Person, Number, Tense, Voice),
+    Infinitive(TenseI, Voice),
+    ParticiplesFuture(Voice),
+    ParticiplesPresent,
+    ParticiplesPerfect,
+    Subjunctive(Person, Number, TenseS, Voice),
+    ImperativePresent(Number, Voice),
+    ImperativeFutureActive(Number, PersonI),
+    ImperativeFuturePassiveSing(PersonI),
+    ImperativeFuturePassivePl,
+    GerundGenitive,
+    GerundDative,
+    GerundAcc,
+    GerundAbl,
+    SupineAcc,
+    SupineAblative,
+} //  deriving (Show,Eq,Ord)
 
-{- Instance of Param -}
+// {- Instance of Param -}
 
-instance Param Person  where values = enum
-instance Param PersonI where values = enum
-instance Param Tense   where values = enum
-instance Param TenseI  where values = enum
-instance Param TenseS  where values = enum
-instance Param Voice   where values = enum
+impl Param for Person {} // where values = enum
+impl Param for PersonI {} // where values = enum
+impl Param for Tense {} // where values = enum
+impl Param for TenseI {} // where values = enum
+impl Param for TenseS {} // where values = enum
+impl Param for Voice {} // where values = enum
 
-instance Param VerbForm where
-    values = 
-     [Indicative p n t v | 
-      v <- values,
-      t <- values, 
-      n <- values,
-      p <- values
-     ] ++
-     [Infinitive t v | t <- values, v <- values] ++
-     [ParticiplesFuture v | v <- values] ++ 
-     [ParticiplesPresent, 
-      ParticiplesPerfect] ++
-     [Subjunctive p n t v | 
-      v <- values,
-      t <- values,
-      n <- values, 
-      p <- values
-     ] ++
-     [ImperativePresent n v | 
-      n <- values, 
-      v <- values] ++   
-     [ImperativeFutureActive  n p | n <- values, p <- values] ++
-     [ImperativeFuturePassiveSing p | p <- values] ++
-     [
-      ImperativeFuturePassivePl,
-      GerundGenitive, GerundDative, GerundAcc,    
-      GerundAbl, SupineAcc, SupineAblative
-     ]
+impl Param for VerbForm {} // where
+                           //     values =
+                           //      [Indicative p n t v |
+                           //       v <- values,
+                           //       t <- values,
+                           //       n <- values,
+                           //       p <- values
+                           //      ] ++
+                           //      [Infinitive t v | t <- values, v <- values] ++
+                           //      [ParticiplesFuture v | v <- values] ++
+                           //      [ParticiplesPresent,
+                           //       ParticiplesPerfect] ++
+                           //      [Subjunctive p n t v |
+                           //       v <- values,
+                           //       t <- values,
+                           //       n <- values,
+                           //       p <- values
+                           //      ] ++
+                           //      [ImperativePresent n v |
+                           //       n <- values,
+                           //       v <- values] ++
+                           //      [ImperativeFutureActive  n p | n <- values, p <- values] ++
+                           //      [ImperativeFuturePassiveSing p | p <- values] ++
+                           //      [
+                           //       ImperativeFuturePassivePl,
+                           //       GerundGenitive, GerundDative, GerundAcc,
+                           //       GerundAbl, SupineAcc, SupineAblative
+                           //      ]
 
-
-type Verb = VerbForm -> Str
+// type Verb = VerbForm -> Str

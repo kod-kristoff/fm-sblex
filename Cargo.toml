@@ -5,3 +5,5 @@ members = ["crates/*"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [workspace.dependencies]
+# local crates
+fm-core = { version = "0.1.0", path = "./crates/fm-core" }
