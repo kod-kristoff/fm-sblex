@@ -30,3 +30,8 @@ config.status
 
 # bin folder
 /bin/
+
+
+# Added by cargo
+
+/target
