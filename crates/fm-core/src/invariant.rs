@@ -1,23 +1,24 @@
-module Invariant where
+// module Invariant where
 
-import General
-import Dictionary
+// import General
+// import Dictionary
 
-data Invariant = Invariant
-  deriving (Show,Eq,Enum,Ord,Bounded)
+// data Invariant = Invariant
+//   deriving (Show,Eq,Enum,Ord,Bounded)
 
-instance Param Invariant 
-    where values = enum
+pub trait Invariant {}
+// instance Param Invariant
+//     where values = enum
 
-instance Dict Invariant
-    where category = const "Invariant"
+// instance Dict Invariant
+//     where category = const "Invariant"
 
-invar = "Invariant"
+// invar = "Invariant"
 
-type Invar = (Invariant -> Str)
+// type Invar = (Invariant -> Str)
 
-invarEntry :: String -> Entry
-invarEntry = entry . mkInvar
+// invarEntry :: String -> Entry
+// invarEntry = entry . mkInvar
 
-mkInvar :: String -> Invar
-mkInvar s = const (mkStr s)
+// mkInvar :: String -> Invar
+// mkInvar s = const (mkStr s)
