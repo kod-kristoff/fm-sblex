@@ -3,5 +3,9 @@
 version = 3
 
 [[package]]
+name = "fm-core"
+version = "0.1.0"
+
+[[package]]
 name = "fm-sblex"
 version = "0.1.0"
