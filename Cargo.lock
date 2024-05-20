@@ -13,3 +13,6 @@ version = "0.1.0"
 [[package]]
 name = "latin"
 version = "0.1.0"
+dependencies = [
+ "fm-core",
+]

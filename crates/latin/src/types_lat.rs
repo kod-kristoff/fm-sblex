@@ -101,7 +101,8 @@ impl Param for AdjectiveForm {} // where
 
 // {- Adverbs -}
 
-pub struct Adverb(Form, Grade);
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub struct AdverbForm(Grade);
 //  deriving (Show,Eq)
 
 impl Param for AdverbForm {} // where
