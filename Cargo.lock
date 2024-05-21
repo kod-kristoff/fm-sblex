@@ -7,6 +7,10 @@ name = "fm-core"
 version = "0.1.0"
 
 [[package]]
+name = "fm-latin"
+version = "0.1.0"
+
+[[package]]
 name = "fm-sblex"
 version = "0.1.0"
 
