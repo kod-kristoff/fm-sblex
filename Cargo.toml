@@ -7,3 +7,5 @@ members = ["crates/*"]
 [workspace.dependencies]
 # local crates
 fm-core = { version = "0.1.0", path = "./crates/fm-core" }
+fm-sblex = { version = "0.1.0", path = "./crates/fm-sblex" }
+latin = { path = "./crates/latin" }

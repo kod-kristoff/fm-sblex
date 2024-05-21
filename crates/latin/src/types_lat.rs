@@ -16,7 +16,7 @@
 //     along with this program; if not, write to the Free Software
 //     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 // -}
-use fm_core::general::Param;
+use fm_core::{general::Param, invariant::Invariant};
 
 // module TypesLat where
 
@@ -113,6 +113,7 @@ impl Param for AdverbForm {} // where
 
 // {- Particles  -}
 
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
 pub struct ParticleForm(Invariant);
 //  deriving (Show,Eq)
 
@@ -124,6 +125,7 @@ impl Param for ParticleForm {} // where
 
 // {- Preposition -}
 
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
 pub struct PrepForm(Invariant);
 //  deriving (Show,Eq)
 

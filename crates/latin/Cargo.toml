@@ -10,3 +10,4 @@ doctest = false
 [dependencies]
 # local deps
 fm-core.workspace = true
+fm-sblex.workspace = true

@@ -26,6 +26,9 @@
 // import Frontend
 // import Guessing
 
+use fm_sblex::common_main;
+use latin::Latin;
+
 fn main() {
-    common_main(Latin)
+    common_main::common_main(Latin)
 }

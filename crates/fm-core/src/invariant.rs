@@ -6,7 +6,8 @@
 // data Invariant = Invariant
 //   deriving (Show,Eq,Enum,Ord,Bounded)
 
-pub trait Invariant {}
+#[derive(Debug, PartialEq, PartialOrd, Ord, Eq)]
+pub struct Invariant {}
 // instance Param Invariant
 //     where values = enum
 
