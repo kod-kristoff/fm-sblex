@@ -94,8 +94,8 @@ pub fn common_main<A: Language>(l: A) {
 //   case res of
   match cli::retrieve(&l, xx){
     //     Left err -> do prErr $ err
-    Err(err) => eprintln!("err"),
-    Ok(_) => {}
+    Err(err) => eprintln!("err: {}", err),
+    Ok((flags, files)) | files.is_empty() | dictionary_needed(&flags) => {}
 //     Right (flags, []) | dictionary_needed flags
 //     	-> do prg <- getProgName
 //               prErr $ welcome l

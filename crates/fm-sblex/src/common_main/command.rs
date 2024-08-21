@@ -25,7 +25,7 @@ use crate::frontend::Language;
 // import Dictionary
 // import Frontend
 // import Data.List(intersperse,isSuffixOf)
-// import qualified Data.Map as Map 
+// import qualified Data.Map as Map
 // -- import Frontend
 
 // {- |Does the filename end with the suffix .dict? -}
@@ -39,26 +39,25 @@ use crate::frontend::Language;
 // output :: [Flag] -> Maybe FilePath
 // output xs = case [f | Output f <- xs] of
 //              [f] -> Just f
-//              _   -> Nothing  
+//              _   -> Nothing
 
 // printer :: [Flag] -> Maybe String
-// printer xs = 
+// printer xs =
 //     case [p | (Print p) <- xs] of
 //      (x:_) -> return x
 //      _     -> Nothing
-
 
 // apply_encoding :: Language a => a -> [Flag] -> Dictionary -> Dictionary
 // apply_encoding l flags d = case [x | Encoding x <- flags] of
 //                              [] -> d
 //                              (x:_) -> case Map.lookup x (encoding l) of
-//                                         Nothing -> error $ "Unknown encoding: " ++ x 
+//                                         Nothing -> error $ "Unknown encoding: " ++ x
 //                                         Just t -> transform_dictionary t d
 
 // output_write :: [Flag] -> (String -> IO())
 // output_write xs = case output xs of
-//                     Nothing -> putStr      
-//                     Just f  -> writeFile f 
+//                     Nothing -> putStr
+//                     Just f  -> writeFile f
 
 // dictionary_needed :: [Flag] -> Bool
 // dictionary_needed [] = True
@@ -68,13 +67,12 @@ use crate::frontend::Language;
 // is_mode :: [Flag] -> Bool
 // is_mode xs = case [f | Mode f <- xs] of
 //                [_] -> True
-//                _   -> False  
-
+//                _   -> False
 
 // --is_fullform :: [Flag] -> Bool
 // --is_fullform xs = False -- case [f | Fullform f <- xs] of
 //                  --  [_] -> True
-//                  --  _   -> False  
+//                  --  _   -> False
 
 // is_help :: [Flag] -> Bool
 // is_help = elem Help
@@ -88,7 +86,7 @@ use crate::frontend::Language;
 // is_compound :: [Flag] -> Bool
 // is_compound xs = case [f | Compound f <- xs] of
 //                    [_] -> True
-//                    _   -> False  
+//                    _   -> False
 
 // data Comp = All | Min | Max | None | Unknown
 //   deriving Eq
@@ -122,7 +120,7 @@ use crate::frontend::Language;
 // is_argc =  elem (Quality "argc")
 
 // is_unused :: [Flag] -> Bool
-// is_unused = elem (Quality "pop") 
+// is_unused = elem (Quality "pop")
 
 // is_duplicated :: [Flag] -> Bool
 // is_duplicated = elem (Quality "dup")
@@ -133,13 +131,11 @@ use crate::frontend::Language;
 // is_all :: [Flag] -> Bool
 // is_all = elem (Quality "all")
 
-
 // is_test :: [Flag] -> Bool
-// is_test = elem (Quality "test") 
+// is_test = elem (Quality "test")
 
 // is_paradigm_test :: [Flag] -> Bool
-// is_paradigm_test = elem (Quality "para") 
-
+// is_paradigm_test = elem (Quality "para")
 
 // is_net :: [Flag] -> Bool
 // is_net fs = not $ null [x | Net x <- fs]
@@ -147,7 +143,7 @@ use crate::frontend::Language;
 // get_port :: [Flag] -> Maybe Int
 // get_port fs =  case [x | Net x <- fs] of
 //                  (x:_) | all isDigit x -> return $ read x
-//                  _                     -> Nothing 
+//                  _                     -> Nothing
 
 // get_quality :: [Flag] -> String
 // get_quality xs =  case [ x | Quality x <- xs ] of
@@ -155,7 +151,7 @@ use crate::frontend::Language;
 //                      _ -> []
 
 // invalid_quality :: [Flag] -> Bool
-// invalid_quality xs = or [not (elem x ["undef", "pop","dup","para","argc","all","test"]) | Quality x <- xs ] 
+// invalid_quality xs = or [not (elem x ["undef", "pop","dup","para","argc","all","test"]) | Quality x <- xs ]
 
 // get_mode :: [Flag] -> String
 // get_mode xs = case [f | Mode f <- xs] of
@@ -165,7 +161,7 @@ use crate::frontend::Language;
 // is_printer :: [Flag] -> Bool
 // is_printer xs = case [f | Print f <- xs] of
 //                   [_] -> True
-//                   _   -> False  
+//                   _   -> False
 
 // get_tokenizer :: (String -> [Tok]) -> [Flag] -> (String -> [Tok])
 // get_tokenizer _ fs = case get_tokenizer_name fs of
@@ -181,7 +177,7 @@ use crate::frontend::Language;
 // norm_tokenizer = norm . lines
 
 // invalid_tokenizer :: [Flag] -> Bool
-// invalid_tokenizer fs 
+// invalid_tokenizer fs
 //  | elem (get_tokenizer_name fs) ["words","norm", "lines","default"] = False
 //  | otherwise                                                = True
 
@@ -191,58 +187,58 @@ use crate::frontend::Language;
 //                          _     -> "default"
 
 // is_reduce :: [Flag] -> Bool
-// is_reduce fs = not $ null [f | f@(Reduce _) <- fs] 
+// is_reduce fs = not $ null [f | f@(Reduce _) <- fs]
 
 // get_reduce_file ::  [Flag] -> String
 // get_reduce_file fs = case [f | (Reduce f) <- fs]  of
 //                  (f:_) -> f
 //                  [] -> []
 
-
 /// Data type for the Command line arguments.
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Flag {
-  Help,
-       Synth,
-       Quality(String), 
-       Compound(String),
-       Encoding(String),
-       Infl, 
-       Length(String),
-       DupID,
-       Paradigm, 
-       Tag,
-       Reduce(String),
-       Net(String), 
-       Version,
-       Tokenizer(String), 
-       Mode(String),
-       Print(String),
-       Output(String),
+    Help,
+    Synth,
+    Quality(String),
+    Compound(String),
+    Encoding(String),
+    Infl,
+    Length(String),
+    DupID,
+    Paradigm,
+    Tag,
+    Reduce(String),
+    Net(String),
+    Version,
+    Tokenizer(String),
+    Mode(String),
+    Print(String),
+    Output(String),
 }
-// data Flag =  
+// data Flag =
 //        Help             |
 //        Synth            |
-//        Quality  String  | 
+//        Quality  String  |
 //        Compound  String |
 //        Encoding  String |
-//        Infl             | 
+//        Infl             |
 //        Length String    |
 //        DupID            |
-//        Paradigm         | 
+//        Paradigm         |
 //        Tag              |
 //        Reduce String    |
-//        Net String       | 
+//        Net String       |
 //        Version          |
-//        Tokenizer String | 
+//        Tokenizer String |
 //        Mode String      |
 //        Print  String    |
-//        Output   String 
+//        Output   String
 //         deriving (Show,Eq)
 
-// {- |Lists all possible arguments and their explainations -}    
+// {- |Lists all possible arguments and their explainations -}
 // options :: Language l => l -> [OptDescr Flag]
 // options l =
-//     [ 
+//     [
 //       Option ['i'] ["inflection"]  (NoArg Infl)                   "run inflection engine (default)"
 //     -- , Option ['s'] ["synthesiser"] (NoArg Synth)                  "enter synthesizer mode"
 //     -- , Option ['a'] ["analysis"]    (NoArg Tag)                    "pos tagging"
@@ -259,18 +255,18 @@ pub enum Flag {
 //     , Option ['h'] ["help"]        (NoArg Help)                     "display this message"
 //     , Option ['v'] ["version"]     (NoArg Version)                  "display version information"
 //     ]
-    
+
 // {-
 // outp = Output . fromMaybe "stdout"
 // inp  = Input  . fromMaybe "stdin"
 // -}
 
-// {- |Collect the valid arguments. Raises an IO error if it fails.  -} 
+// {- |Collect the valid arguments. Raises an IO error if it fails.  -}
 // compilerOpts :: Language l => l -> [String] -> IO ([Flag], [String])
-// compilerOpts l argv = 
+// compilerOpts l argv =
 //        case getOpt Permute (options l) argv of
 //         (o,xs,[] ) -> return  (o,xs)
-//         (_,_,errs)  -> 
+//         (_,_,errs)  ->
 // 	  do head' <- header
 //  	     ioError (userError (concat errs ++ usageInfo head' (options l)))
 
@@ -282,11 +278,10 @@ pub enum Flag {
 // help l = do head' <- header
 //    	    return $ usageInfo head' (options l)
 
-
 // retrieve :: Language l => l -> [String] -> IO (Either String ([Flag],[FilePath]))
 // pub fn retrieve(l: &dyn Language, xs: &[String]) -> Result<(Vec<Flag>, Vec<FilePath>), io::Error> {
 // retrieve l xs = do res <- Control.Exception.try (compilerOpts l xs)
 //                    case res of
 //                     Left io_err -> return $ Left $ ioeGetErrorString io_err
-//                     Right res'   -> return $ Right res' 
+//                     Right res'   -> return $ Right res'
 // }

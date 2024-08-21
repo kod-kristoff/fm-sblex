@@ -1,4 +1,4 @@
-use std::{ffi::OsString, path::PathBuf};
+use std::{ffi::OsString, path::PathBuf, str::RMatchIndices};
 
 use crate::frontend::Language;
 
@@ -7,6 +7,15 @@ use super::{command::Flag, Error};
 pub fn retrieve(l: &dyn Language, xs: Vec<OsString>) -> Result<(Vec<Flag>, Vec<PathBuf>), Error> {
     let cmd = options(l);
     let matches = cmd.get_matches_from(xs);
+    let dicts: Vec<PathBuf> = matches
+        .get_many::<PathBuf>("dictionary_file(s)")
+        .unwrap_or_default()
+        .map(|p| p.to_owned())
+        .collect();
+    println!("{:?}", dicts);
+    if matches.get_flag("inflection") {
+        return Ok((vec![Flag::Infl], dicts));
+    }
     todo!()
 }
 
